@@ -44,13 +44,35 @@ app.use(
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 7,
-      sameSite: "lax",
+      // Use strict SameSite policy for CSRF protection
+      // This prevents cookies from being sent with cross-site requests
+      sameSite: "strict",
     },
   }),
 );
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// CSRF protection middleware for state-changing requests
+// Validates custom header to prevent cross-origin form submissions
+const csrfProtection = (req: any, res: any, next: any) => {
+  // Skip CSRF check for safe methods (GET, HEAD, OPTIONS)
+  if (['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
+    return next();
+  }
+  
+  // Check for custom header that can only be set by JavaScript from same origin
+  // Due to CORS, cross-origin requests cannot set custom headers without preflight
+  const csrfHeader = req.headers['x-requested-with'] || req.headers['content-type'];
+  if (csrfHeader && (csrfHeader === 'XMLHttpRequest' || csrfHeader.includes('application/json'))) {
+    return next();
+  }
+  
+  return res.status(403).json({ message: 'CSRF validation failed' });
+};
+
+app.use(csrfProtection);
 
 // Cached database connection for serverless - reuse pool across requests
 let cachedPool: Pool | null = null;
