@@ -20,8 +20,15 @@ declare module "express-session" {
   }
 }
 
-// Use memory store for sessions in serverless environment
-// Note: For production, consider using a Redis-based session store
+// IMPORTANT: Memory store is used for sessions in this serverless environment.
+// This has limitations in production as each serverless function instance 
+// maintains separate session storage, which can cause session loss when 
+// requests hit different instances.
+// 
+// For production deployment with multiple instances, consider:
+// - Using a Redis-based session store (e.g., connect-redis)
+// - Using a database-backed session store
+// - Using JWT tokens instead of sessions
 import createMemoryStore from "memorystore";
 const MemoryStore = createMemoryStore(session);
 
@@ -45,13 +52,23 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Database connection for serverless
+// Cached database connection for serverless - reuse pool across requests
+let cachedPool: Pool | null = null;
+let cachedDb: ReturnType<typeof drizzle> | null = null;
+
 const getDb = () => {
   if (!process.env.DATABASE_URL) {
     throw new Error("DATABASE_URL must be set");
   }
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-  return drizzle({ client: pool, schema });
+  
+  // Reuse existing connection if available
+  if (cachedDb && cachedPool) {
+    return cachedDb;
+  }
+  
+  cachedPool = new Pool({ connectionString: process.env.DATABASE_URL });
+  cachedDb = drizzle({ client: cachedPool, schema });
+  return cachedDb;
 };
 
 // Import schema tables
