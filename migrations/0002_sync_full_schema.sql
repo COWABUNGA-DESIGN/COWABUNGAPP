@@ -172,7 +172,16 @@ ALTER TABLE time_punches DROP CONSTRAINT IF EXISTS time_punches_punch_type_check
 ALTER TABLE time_punches ADD CONSTRAINT time_punches_punch_type_check CHECK (punch_type IN ('work', 'travel', 'other'));
 
 -- Update existing employee_id values where NULL (for existing users without employee_id)
-UPDATE users SET employee_id = 'EMP-' || SUBSTRING(id, 1, 8) WHERE employee_id IS NULL;
-
--- Make employee_id NOT NULL after setting values
-ALTER TABLE users ALTER COLUMN employee_id SET NOT NULL;
+-- This ensures all users have an employee_id before adding the NOT NULL constraint
+DO $$
+BEGIN
+  -- First update any NULL employee_id values
+  UPDATE users SET employee_id = 'EMP-' || SUBSTRING(id, 1, 8) WHERE employee_id IS NULL;
+  
+  -- Only add NOT NULL if no NULL values remain
+  IF NOT EXISTS (SELECT 1 FROM users WHERE employee_id IS NULL) THEN
+    ALTER TABLE users ALTER COLUMN employee_id SET NOT NULL;
+  ELSE
+    RAISE NOTICE 'Warning: Some users still have NULL employee_id, NOT NULL constraint not applied';
+  END IF;
+END $$;
