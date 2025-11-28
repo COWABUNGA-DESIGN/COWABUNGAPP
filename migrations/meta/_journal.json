@@ -8,6 +8,13 @@
       "when": 1763333796961,
       "tag": "0001_add_role_email_photos",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1763337728923,
+      "tag": "0002_sync_full_schema",
+      "breakpoints": true
     }
   ]
 }
