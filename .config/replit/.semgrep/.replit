@@ -1,0 +1,103 @@
+modules = ["nodejs-20", "web", "dotnet-10.0", "cpp-clang14", "gcloud", "nodejs-24", "nodejs-23", "postgresql-16"]
+run = "npm run dev"
+hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
+
+[nix]
+channel = "stable-24_05"
+packages = ["zip"]
+
+[deployment]
+deploymentTarget = "autoscale"
+build = ["npm", "run", "build"]
+run = ["npm", "run", "start"]
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[[ports]]
+localPort = 33407
+externalPort = 6800
+
+[[ports]]
+localPort = 33581
+externalPort = 4200
+
+[[ports]]
+localPort = 35391
+externalPort = 8080
+
+[[ports]]
+localPort = 35783
+externalPort = 8000
+
+[[ports]]
+localPort = 36261
+externalPort = 3000
+
+[[ports]]
+localPort = 38163
+externalPort = 5173
+
+[[ports]]
+localPort = 38585
+externalPort = 3003
+
+[[ports]]
+localPort = 40251
+externalPort = 3001
+
+[[ports]]
+localPort = 41083
+externalPort = 9000
+
+[[ports]]
+localPort = 41085
+externalPort = 8099
+
+[[ports]]
+localPort = 41863
+externalPort = 8081
+
+[[ports]]
+localPort = 43201
+externalPort = 8008
+
+[[ports]]
+localPort = 44267
+externalPort = 5000
+
+[[ports]]
+localPort = 44665
+externalPort = 6000
+
+[[ports]]
+localPort = 45769
+externalPort = 3002
+
+[env]
+PORT = "5000"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
+waitForPort = 5000
+
+[agent]
+integrations = ["javascript_websocket:1.0.0", "javascript_log_in_with_replit:1.0.0", "javascript_database:1.0.0"]
