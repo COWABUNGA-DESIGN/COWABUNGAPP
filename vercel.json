@@ -1,5 +1,9 @@
 {
   "buildCommand": "npm install && npm run build",
-  "outputDirectory": "dist",
-  "nodeVersion": "18.x"
+  "outputDirectory": "dist/public",
+  "nodeVersion": "18.x",
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api" },
+    { "source": "/(.*)", "destination": "/api" }
+  ]
 }
