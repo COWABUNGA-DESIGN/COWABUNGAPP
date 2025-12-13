@@ -44,5 +44,5 @@ This is a complete backup of your Veterans Garage login system with turquoise gl
 Extract this zip and the paths will match your project structure exactly.
 
 Created: 2025-11-29
-For: Veterans Garage Management System (Canada)
+For: ELEVEX ERP System (Canada)
 Backup Type: COMPLETE WITH ALL ASSETS
