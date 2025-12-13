@@ -1,8 +1,8 @@
-# ELEVEX ERP - Lift Dealership Management System
+# BROBRO GARAGE ERP - Lift Dealership Management System
 
 ## Overview
 
-ELEVEX ERP is a comprehensive enterprise resource planning system designed for lift and material handling equipment dealerships. It manages sales, rentals, service operations, parts inventory, warranty claims, and accounting. The application features a React-based frontend with a distinctive gradient color scheme and animated ELEVEX branding, and an Express backend with PostgreSQL integration. Key capabilities include real-time equipment/parts inventory management, a real-time messaging system, robust user and profile management, a comprehensive notification system, a work order demand workflow, and detailed dashboard statistics. The system prioritizes security, type safety, and operational efficiency for dealership management.
+ERASE ALL ELEVEX NAME IN THE APP - this is an applepunk.com app ,  is a comprehensive enterprise resource planning system designed forgarage and material handling equipment dealerships. It manages sales, rentals, service operations, parts inventory, warranty claims, and accounting. The application features a React-based frontend with a distinctive gradient color scheme and animated ELEVEX branding, and an Express backend with PostgreSQL integration. Key capabilities include real-time equipment/parts inventory management, a real-time messaging system, robust user and profile management, a comprehensive notification system, a work order demand workflow, and detailed dashboard statistics. The system prioritizes security, type safety, and operational efficiency for dealership management.
 
 ## Recent Updates (Nov 24, 2025)
 
