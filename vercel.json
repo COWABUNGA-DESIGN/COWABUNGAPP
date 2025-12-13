@@ -1,5 +1,11 @@
 {
   "buildCommand": "npm install && npm run build",
-  "outputDirectory": "dist",
-  "nodeVersion": "18.x"
+  "outputDirectory": "dist/public",
+  "nodeVersion": "18.x",
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api" },
+    { "src": "/assets/(.*)", "dest": "/assets/$1" },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
 }
